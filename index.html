@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle Fade Animation</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .particle-container {
+      display: grid;
+      grid-template-columns: repeat(51, 20px); /* 25 columns */
+      grid-template-rows: repeat(22, 20px);    /* 20 rows */
+      gap: 10px;
+      position: relative;
+    }
+
+    .particle {
+      width: 2px;
+      height: 2px;
+      background-color: white;
+      border-radius: 50%;
+      opacity: 1;
+      background: radial-gradient(circle, rgb(253, 178, 40), rgb(121, 39, 250)); /* Gradient inside the dot */
+      transition: opacity 3s ease-in-out; /* Smooth transition */
+    }
+
+    .fadeOut {
+      opacity: 0 !important;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="particle-container" class="particle-container"></div>
+
+<script>
+  const rows = 34;
+  const cols = 35;
+  const totalDots = rows * cols;
+  const chunkSize = 4; // Size of each chunk (4x4 grid)
+
+  const particleContainer = document.getElementById('particle-container');
+  
+  // Dynamically create dots in a grid
+  for (let i = 0; i < totalDots; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particleContainer.appendChild(particle);
+  }
+
+  // Function to randomly add fade-out effect to chunks of particles
+  function randomizeFadeOut() {
+    const particles = document.querySelectorAll('.particle');
+    
+    const numChunks = Math.floor(totalDots / (chunkSize * chunkSize)); // Calculate how many chunks there are
+    
+    let chunkCount = 0;
+
+    const fadeOutInterval = setInterval(() => {
+      if (chunkCount >= numChunks) {
+        // All chunks have been faded out, so restart the process by showing all dots
+        resetParticles();
+        chunkCount = 0; // Reset chunk count
+      } else {
+        // Randomly pick a chunk (e.g., 4x4 grid)
+        const chunkStartIndex = Math.floor(Math.random() * (totalDots - chunkSize * chunkSize));
+
+        // Apply fade-out effect to a random chunk of 4x4 grid
+        for (let i = 0; i < chunkSize; i++) {
+          for (let j = 0; j < chunkSize; j++) {
+            const index = chunkStartIndex + (i * cols) + j;
+            if (index < totalDots) {
+              const particle = particles[index];
+              particle.classList.add('fadeOut');
+            }
+          }
+        }
+
+        chunkCount++;
+      }
+    }, 100); // Increase the interval to make the process slower
+  }
+
+  // Reset particles: all dots reappear and reset to full opacity
+  function resetParticles() {
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach(particle => {
+      particle.classList.remove('fadeOut'); // Remove fadeOut class
+      particle.style.opacity = 1; // Ensure opacity is 1 (fully visible)
+    });
+
+    // After resetting, start the fade-out process again
+    setTimeout(() => {
+      randomizeFadeOut();
+    }, 3000); // Delay before starting the fade-out cycle again
+  }
+
+  // Start the animation process
+  randomizeFadeOut();
+
+</script>
+
+</body>
+</html>
