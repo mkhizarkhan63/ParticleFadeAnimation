@@ -1,3 +1,8 @@
 # ParticleFadeAnimation
 Made up on HTML, CSS &amp; JavaScript
-![image](https://github.com/user-attachments/assets/c8c16252-0948-4380-9057-6fc72d727739)
+
+# You can Style it Your Own way just download a file and run it.
+
+![image](https://github.com/user-attachments/assets/e1570085-ded0-41b1-ae4d-bd7447f91f3e)
+
+
